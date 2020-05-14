@@ -71,6 +71,8 @@ def main():
 
         cv2.imwrite("imgOriginalScene.png", imgOriginalScene)           # write image out to file
 
+        searchEmailAndSentMail(licPlate.strChars)
+
     # end if else
 
     cv2.waitKey(0)					# hold windows open until user presses a key
@@ -79,6 +81,59 @@ def main():
 # end main
 
 ###################################################################################################
+
+def searchEmailAndSentMail(licPlate):
+    import csv
+
+    with open('email.csv') as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        linecount = 0
+        for row in csv_reader:
+            if linecount != 0 and row[0] == licPlate:
+                email = row[1]
+                sendMail(email,licPlate)
+            linecount += 1
+
+
+###################################################################################################
+
+def sendMail(email,licPlate):
+
+    import smtplib
+    from email.message import EmailMessage
+    from datetime import datetime
+
+    time =  datetime.now().strftime("%d-%m-%Y  %H-%M-%S")
+
+    EMAIL_ADDRESS = 'getyourselfnotify@gmail.com'
+    EMAIL_PASSWORD = 'bhavya1103'
+
+    msg = EmailMessage()
+    msg['Subject'] = 'UPES Attendance'
+    msg['From'] = EMAIL_ADDRESS
+    msg['To'] = email
+
+    msg.add_alternative(f"""\
+            <!DOCTYPE html>
+            <html>
+                <body>
+                    <h3 style="color:green;">Your attendace is marked at {time} using {licPlate}</h3>
+                </body>
+            </html>
+            """, subtype='html')
+    # for data in datalist:
+    #     msg.add_attachment(data[0], maintype='image', subtype=data[1], filename=data[2])
+    try:
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+            smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+            smtp.send_message(msg)
+        print("Mail Sent")
+    except:
+        print("Mail Not Send")
+
+
+###################################################################################################
+
 def drawRedRectangleAroundPlate(imgOriginalScene, licPlate):
 
     p2fRectPoints = cv2.boxPoints(licPlate.rrLocationOfPlateInScene)            # get 4 vertices of rotated rect

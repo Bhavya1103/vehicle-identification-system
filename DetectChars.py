@@ -124,7 +124,7 @@ def detectCharsInPlates(listOfPossiblePlates):
                 # given a list of all possible chars, find groups of matching chars within the plate
         listOfListsOfMatchingCharsInPlate = findListOfListsOfMatchingChars(listOfPossibleCharsInPlate)
 
-        if Main.showSteps == True: # show steps ###################################################
+        if Main.showSteps == False: # show steps ###################################################
             imgContours = np.zeros((height, width, 3), np.uint8)
             del contours[:]
 
@@ -162,7 +162,7 @@ def detectCharsInPlates(listOfPossiblePlates):
             listOfListsOfMatchingCharsInPlate[i] = removeInnerOverlappingChars(listOfListsOfMatchingCharsInPlate[i])              # and remove inner overlapping chars
         # end for
 
-        if Main.showSteps == True: # show steps ###################################################
+        if Main.showSteps == False: # show steps ###################################################
             imgContours = np.zeros((height, width, 3), np.uint8)
 
             for listOfMatchingChars in listOfListsOfMatchingCharsInPlate:
@@ -196,7 +196,7 @@ def detectCharsInPlates(listOfPossiblePlates):
                 # suppose that the longest list of matching chars within the plate is the actual list of chars
         longestListOfMatchingCharsInPlate = listOfListsOfMatchingCharsInPlate[intIndexOfLongestListOfChars]
 
-        if Main.showSteps == True: # show steps ###################################################
+        if Main.showSteps == False: # show steps ###################################################
             imgContours = np.zeros((height, width, 3), np.uint8)
             del contours[:]
 
