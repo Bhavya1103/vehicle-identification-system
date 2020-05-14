@@ -84,15 +84,23 @@ def main():
 
 def searchEmailAndSentMail(licPlate):
     import csv
-
+    rows = []
     with open('email.csv') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         linecount = 0
         for row in csv_reader:
             if linecount != 0 and row[0] == licPlate:
                 email = row[1]
+                row[2] = 1
                 sendMail(email,licPlate)
+
+            rows.append(row)
             linecount += 1
+
+    with open('email.csv', 'w', newline='') as csv_file:
+
+        csv_writer = csv.writer(csv_file)
+        csv_writer.writerows(rows)
 
 
 ###################################################################################################
